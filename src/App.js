@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState, useMemo } from "react";
+import "./App.css"
 function App() {
+  const [memoValue, setMemoValue] = useState(1000000000);
+  const [count, setCount] = useState(0);
+
+  function heavyFunction(n) {
+    let sum = 0;
+    for (let i = 0; i < n; i++) {
+      sum++;
+    }
+    return sum;
+  }
+
+  // const memorizeValue = heavyFunction(render)
+  const memorizedValue = useMemo(() => heavyFunction(memoValue), [memoValue]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <div className="flex">
+        <div>Count: {count}</div>
+        <div>Memorized Value: {memorizedValue}</div>
+      </div>
+      <div className="flex">
+        <button onClick={() => setCount(count + 1)}>Increase Count</button>
+        <button onClick={() => setMemoValue(memoValue + 1)}>
+          Increase Memorized
+        </button>
+      </div>
     </div>
   );
 }
